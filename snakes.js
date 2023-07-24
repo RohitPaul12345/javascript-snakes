@@ -16,7 +16,7 @@ v+1E3){l=Math.round(u*1E3/(j-v));w=Math.min(w,l);x=Math.max(x,l);s(y.data,Math.m
  */
 (function(){
 
-var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
+let chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
 	done = 0,
 	toString = Object.prototype.toString,
 	hasDuplicate = false,
@@ -33,11 +33,11 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
 	return 0;
 });
 
-var Sizzle = function( selector, context, results, seed ) {
+let Sizzle = function( selector, context, results, seed ) {
 	results = results || [];
 	context = context || document;
 
-	var origContext = context;
+	let origContext = context;
 
 	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
 		return [];
@@ -47,7 +47,7 @@ var Sizzle = function( selector, context, results, seed ) {
 		return results;
 	}
 
-	var m, set, checkSet, extra, ret, cur, pop, i,
+	let m, set, checkSet, extra, ret, cur, pop, i,
 		prune = true,
 		contextXML = Sizzle.isXML( context ),
 		parts = [],
@@ -206,18 +206,18 @@ Sizzle.matchesSelector = function( node, expr ) {
 };
 
 Sizzle.find = function( expr, context, isXML ) {
-	var set;
+	let set;
 
 	if ( !expr ) {
 		return [];
 	}
 
-	for ( var i = 0, l = Expr.order.length; i < l; i++ ) {
-		var match,
+	for ( let i = 0, l = Expr.order.length; i < l; i++ ) {
+		let match,
 			type = Expr.order[i];
 		
 		if ( (match = Expr.leftMatch[ type ].exec( expr )) ) {
-			var left = match[1];
+			let left = match[1];
 			match.splice( 1, 1 );
 
 			if ( left.substr( left.length - 1 ) !== "\\" ) {
@@ -242,16 +242,16 @@ Sizzle.find = function( expr, context, isXML ) {
 };
 
 Sizzle.filter = function( expr, set, inplace, not ) {
-	var match, anyFound,
+	let match, anyFound,
 		old = expr,
 		result = [],
 		curLoop = set,
 		isXMLFilter = set && set[0] && Sizzle.isXML( set[0] );
 
 	while ( expr && set.length ) {
-		for ( var type in Expr.filter ) {
+		for ( let type in Expr.filter ) {
 			if ( (match = Expr.leftMatch[ type ].exec( expr )) != null && match[2] ) {
-				var found, item,
+				let found, item,
 					filter = Expr.filter[ type ],
 					left = match[1];
 
@@ -279,10 +279,10 @@ Sizzle.filter = function( expr, set, inplace, not ) {
 				}
 
 				if ( match ) {
-					for ( var i = 0; (item = curLoop[i]) != null; i++ ) {
+					for ( let i = 0; (item = curLoop[i]) != null; i++ ) {
 						if ( item ) {
 							found = filter( item, match, i, curLoop );
-							var pass = not ^ !!found;
+							let pass = not ^ !!found;
 
 							if ( inplace && found != null ) {
 								if ( pass ) {
@@ -336,7 +336,7 @@ Sizzle.error = function( msg ) {
 	throw "Syntax error, unrecognized expression: " + msg;
 };
 
-var Expr = Sizzle.selectors = {
+let Expr = Sizzle.selectors = {
 	order: [ "ID", "NAME", "TAG" ],
 
 	match: {
@@ -368,7 +368,7 @@ var Expr = Sizzle.selectors = {
 
 	relative: {
 		"+": function(checkSet, part){
-			var isPartStr = typeof part === "string",
+			let isPartStr = typeof part === "string",
 				isTag = isPartStr && !rNonWord.test( part ),
 				isPartStrNotTag = isPartStr && !isTag;
 
@@ -376,7 +376,7 @@ var Expr = Sizzle.selectors = {
 				part = part.toLowerCase();
 			}
 
-			for ( var i = 0, l = checkSet.length, elem; i < l; i++ ) {
+			for ( let i = 0, l = checkSet.length, elem; i < l; i++ ) {
 				if ( (elem = checkSet[i]) ) {
 					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}
 
@@ -392,7 +392,7 @@ var Expr = Sizzle.selectors = {
 		},
 
 		">": function( checkSet, part ) {
-			var elem,
+			let elem,
 				isPartStr = typeof part === "string",
 				i = 0,
 				l = checkSet.length;
@@ -404,7 +404,7 @@ var Expr = Sizzle.selectors = {
 					elem = checkSet[i];
 
 					if ( elem ) {
-						var parent = elem.parentNode;
+						let parent = elem.parentNode;
 						checkSet[i] = parent.nodeName.toLowerCase() === part ? parent : false;
 					}
 				}
@@ -427,7 +427,7 @@ var Expr = Sizzle.selectors = {
 		},
 
 		"": function(checkSet, part, isXML){
-			var nodeCheck,
+			let nodeCheck,
 				doneName = done++,
 				checkFn = dirCheck;
 
@@ -441,7 +441,7 @@ var Expr = Sizzle.selectors = {
 		},
 
 		"~": function( checkSet, part, isXML ) {
-			var nodeCheck,
+			let nodeCheck,
 				doneName = done++,
 				checkFn = dirCheck;
 
@@ -458,7 +458,7 @@ var Expr = Sizzle.selectors = {
 	find: {
 		ID: function( match, context, isXML ) {
 			if ( typeof context.getElementById !== "undefined" && !isXML ) {
-				var m = context.getElementById(match[1]);
+				let m = context.getElementById(match[1]);
 				// Check parentNode to catch when Blackberry 4.6 returns
 				// nodes that are no longer in the document #6963
 				return m && m.parentNode ? [m] : [];
@@ -467,10 +467,10 @@ var Expr = Sizzle.selectors = {
 
 		NAME: function( match, context ) {
 			if ( typeof context.getElementsByName !== "undefined" ) {
-				var ret = [],
+				let ret = [],
 					results = context.getElementsByName( match[1] );
 
-				for ( var i = 0, l = results.length; i < l; i++ ) {
+				for ( let i = 0, l = results.length; i < l; i++ ) {
 					if ( results[i].getAttribute("name") === match[1] ) {
 						ret.push( results[i] );
 					}
@@ -494,7 +494,7 @@ var Expr = Sizzle.selectors = {
 				return match;
 			}
 
-			for ( var i = 0, elem; (elem = curLoop[i]) != null; i++ ) {
+			for ( let i = 0, elem; (elem = curLoop[i]) != null; i++ ) {
 				if ( elem ) {
 					if ( not ^ (elem.className && (" " + elem.className + " ").replace(/[\t\n\r]/g, " ").indexOf(match) >= 0) ) {
 						if ( !inplace ) {
@@ -527,7 +527,7 @@ var Expr = Sizzle.selectors = {
 				match[2] = match[2].replace(/^\+|\s*/g, '');
 
 				// parse equations like 'even', 'odd', '5', '2n', '3n+2', '4n-1', '-n+6'
-				var test = /(-?)(\d*)(?:n([+\-]?\d*))?/.exec(
+				let test = /(-?)(\d*)(?:n([+\-]?\d*))?/.exec(
 					match[2] === "even" && "2n" || match[2] === "odd" && "2n+1" ||
 					!/\D/.test( match[2] ) && "0n+" + match[2] || match[2]);
 
